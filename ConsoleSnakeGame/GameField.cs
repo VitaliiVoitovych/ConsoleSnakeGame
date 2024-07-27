@@ -6,6 +6,7 @@ public class GameField
     public const int ROWS = 20, COLUMNS = 40;
     private readonly Snake _snake;
     private readonly Apple _apple;
+    private int _score = 0;
 
     public GameField()
     {
@@ -19,6 +20,8 @@ public class GameField
         Console.Clear();
         _snake.Draw();
         _apple.Draw();
+
+        Console.Title = $"Your Score: {_score}";
     }
 
     public void Update()
@@ -28,6 +31,7 @@ public class GameField
         {
             _apple.ChangePosition(_snake);
             _snake.Grow();
+            _score++;
         }
         if (_snake.IsDead)
         {

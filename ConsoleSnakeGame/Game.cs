@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace ConsoleSnakeGame;
+﻿namespace ConsoleSnakeGame;
 
 public class Game
 {
