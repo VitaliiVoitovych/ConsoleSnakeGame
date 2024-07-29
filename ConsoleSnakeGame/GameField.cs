@@ -2,16 +2,15 @@
 
 public class GameField
 {
-    
     public const int ROWS = 20, COLUMNS = 40;
     private readonly Snake _snake;
-    private readonly Apple _apple;
+    private Apple _apple;
     private int _score = 0;
 
     public GameField()
     {
         _snake = new Snake();
-        _apple = new Apple();
+        _apple = GenerateFood();
     }
 
 
@@ -21,23 +20,49 @@ public class GameField
         _snake.Draw();
         _apple.Draw();
 
-        Console.Title = $"Your Score: {_score}";
+        DisplayScore();
     }
 
     public void Update()
     {
         _snake.Move();
-        if (_snake.Head == _apple.Position)
+
+        CheckAppleCollision();
+
+        if (_snake.IsDead)
         {
-            _apple.ChangePosition(_snake);
+            EndGame();
+        }
+    }
+
+    private Apple GenerateFood()
+    {
+        Position position;
+        do
+        {
+            position = new Position(
+                Random.Shared.Next(0, ROWS), Random.Shared.Next(0, COLUMNS));
+        } while (_snake.Body.Any(e => e == position) || _snake.Head == position);
+
+        return new Apple(position);
+    }
+
+    private void CheckAppleCollision()
+    {
+        if (_snake.Head.Equals(_apple.Position))
+        {
+            _apple = GenerateFood();
             _snake.Grow();
             _score++;
         }
-        if (_snake.IsDead)
-        {
-            Game.IsGameOver = true;
-            Console.SetCursorPosition(0, ROWS + 1);
-            Console.WriteLine("Game Over");
-        }
     }
+
+    private void EndGame()
+    {
+        Game.IsGameOver = true;
+        Console.SetCursorPosition(0, ROWS + 1);
+        Console.WriteLine("Game Over");
+    }
+
+    private void DisplayScore() => Console.Title = $"Your Score: {_score}";
 }

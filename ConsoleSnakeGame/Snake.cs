@@ -1,19 +1,16 @@
-﻿using System.Diagnostics;
-
-namespace ConsoleSnakeGame;
+﻿namespace ConsoleSnakeGame;
 
 public class Snake
 {
-    public Position Head => _body[0];
-    public IEnumerable<Position> Body => _body[1..];
-
-    public bool IsDead { get; private set; } = false;
-
     private List<Position> _body;
 
     private readonly char _texture = '■';
     private Direction _oldDirection = Direction.Right;
     private Direction _currentDirection = Direction.Right;
+
+    public Position Head => _body[0];
+    public IEnumerable<Position> Body => _body[1..];
+    public bool IsDead { get; private set; } = false;
 
     public Snake()
     {
@@ -58,12 +55,17 @@ public class Snake
         _body.RemoveAt(0);
         _body.Insert(0, newHead);
 
+        WrapAround();
+
+        if (Body.Any(e => e == Head)) IsDead = true;
+    }
+
+    private void WrapAround()
+    {
         if (Head.Top < 0) _body[0] = new Position(GameField.ROWS, _body[0].Left);
         else if (Head.Top > GameField.ROWS) _body[0] = new Position(0, _body[0].Left);
         else if (Head.Left < 0) _body[0] = new Position(_body[0].Top, GameField.COLUMNS);
         else if (Head.Left > GameField.COLUMNS) _body[0] = new Position(_body[0].Top, 0);
-
-        if (Body.Any(e => e == Head)) IsDead = true;
     }
 
     public void Grow()
