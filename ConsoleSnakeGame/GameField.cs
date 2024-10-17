@@ -17,6 +17,9 @@ public class GameField
     public void Draw()
     {
         Console.Clear();
+
+        DrawBorders();
+
         _snake.Draw();
         _apple.Draw();
 
@@ -32,6 +35,23 @@ public class GameField
         if (_snake.IsDead)
         {
             EndGame();
+        }
+    }
+
+    private void DrawBorders()
+    {
+        for (int i = 0; i < COLUMNS + 1; i++)
+        {
+            Console.SetCursorPosition(i, ROWS + 1);
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write("█");
+        }
+
+        for (int i = 0; i < ROWS + 1; i++)
+        {
+            Console.SetCursorPosition(COLUMNS + 1, i);
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write("██");
         }
     }
 
