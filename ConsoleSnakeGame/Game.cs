@@ -1,6 +1,4 @@
-﻿using static System.Formats.Asn1.AsnWriter;
-
-namespace ConsoleSnakeGame;
+﻿namespace ConsoleSnakeGame;
 
 public class Game
 {
