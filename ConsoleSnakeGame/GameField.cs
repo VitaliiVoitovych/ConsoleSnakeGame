@@ -9,6 +9,9 @@ public class GameField
 
     public GameField()
     {
+        DrawBorders();
+        UpdateScore();
+
         _snake = new Snake();
         _apple = GenerateFood();
     }
@@ -16,14 +19,8 @@ public class GameField
 
     public void Draw()
     {
-        Console.Clear();
-
-        DrawBorders();
-
         _snake.Draw();
         _apple.Draw();
-
-        DisplayScore();
     }
 
     public void Update()
@@ -47,7 +44,7 @@ public class GameField
             Console.Write("█");
         }
 
-        for (int i = 0; i < ROWS + 1; i++)
+        for (int i = 0; i < ROWS + 2; i++)
         {
             Console.SetCursorPosition(COLUMNS + 1, i);
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -74,15 +71,22 @@ public class GameField
             _apple = GenerateFood();
             _snake.Grow();
             _score++;
+            UpdateScore();
         }
     }
 
     private void EndGame()
     {
         Game.IsGameOver = true;
-        Console.SetCursorPosition(0, ROWS + 1);
+        Console.SetCursorPosition(COLUMNS + 4, 1);
+        Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine("Game Over");
     }
 
-    private void DisplayScore() => Console.Title = $"Your Score: {_score}";
+    private void UpdateScore()
+    {
+        Console.SetCursorPosition(COLUMNS + 4, 0);
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.Write($"Your score: {_score}");
+    }
 }
